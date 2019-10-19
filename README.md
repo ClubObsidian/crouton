@@ -29,7 +29,6 @@ the `Job` object.
 ``` groovy
 repositories {
 	maven { url 'https://jitpack.io' }
-	maven { url 'https://repo.spongepowered.org/maven' }
 }
 
 compile 'com.github.clubobsidian:crouton:1.0.0'
@@ -42,10 +41,6 @@ compile 'com.github.clubobsidian:crouton:1.0.0'
 	<repository>
 		<id>jitpack.io</id>
 		<url>https://jitpack.io</url>
-	</repository>
-	<repository>
-		<id>sponge</id>
-		<url>https://repo.spongepowered.org/maven</url>
 	</repository>
 </repositories>
 
