@@ -1,0 +1,22 @@
+language: java
+dist: trusty
+
+before_install:
+  - chmod +x gradlew
+before_script:
+- wget https://github.com/sormuras/bach/raw/master/install-jdk.sh
+
+jobs:
+  include:
+  - stage: jdk.java.net - OpenJDK - GPL
+    env: JDK=8
+    script: 
+    - jdk_switcher use openjdk8
+    - ./gradlew clean
+    - ./gradlew build    
+
+after_script:
+- echo JAVA_HOME = ${JAVA_HOME}
+- echo PATH = ${PATH}
+- ls ${JAVA_HOME}
+- java -version
