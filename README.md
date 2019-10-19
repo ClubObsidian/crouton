@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/ClubObsidian/crouton.svg?branch=master)](https://travis-ci.org/ClubObsidian/crouton)
 [![](https://jitpack.io/v/clubobsidian/crouton.svg)](https://jitpack.io/#clubobsidian/crouton)
+[![Known Vulnerabilities](https://snyk.io/test/github/ClubObsidian/crouton/badge.svg?targetFile=build.gradle)](https://snyk.io/test/github/ClubObsidian/crouton?targetFile=build.gradle)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 
