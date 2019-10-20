@@ -20,4 +20,8 @@ open class JobWrapper public constructor() {
     fun isRunning() : AtomicBoolean {
         return this.running;
     }
+
+    fun stop() {
+        this.running.set(false);
+    }
 }
