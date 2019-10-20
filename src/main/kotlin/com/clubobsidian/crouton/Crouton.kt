@@ -15,85 +15,68 @@
  */
 package com.clubobsidian.crouton
 
+import com.clubobsidian.crouton.wrapper.JobWrapper
+import com.clubobsidian.crouton.wrapper.FutureJobWrapper;
 import kotlinx.coroutines.*;
 import java.lang.Runnable
 
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Future
 
-import java.util.concurrent.atomic.AtomicBoolean;
-
 class Crouton public constructor() {
 
-    private var job: Job? = null;
-    private val running = AtomicBoolean(true);
+    fun async(runnable : Runnable) : JobWrapper {
+        val wrapper = JobWrapper();
+        val job = GlobalScope.launch() {
+            async {
+                runnable.run();
+            }
+        };
 
-    fun async(runnable : Runnable) : Job {
-        if(this.job == null) {
-            val newJob = GlobalScope.launch() {
-                async {
+        wrapper.setJob(job);
+        return wrapper;
+    }
+
+    fun asyncDelayed(runnable : Runnable, delay: Long) : JobWrapper {
+        val wrapper = JobWrapper();
+        val job = GlobalScope.launch() {
+            async {
+                delay(delay);
+                runnable.run();
+            }
+        };
+
+        wrapper.setJob(job);
+        return wrapper;
+    }
+
+    fun asyncRepeating(runnable: Runnable, initialDelay : Long, repeatingDelay : Long) : JobWrapper {
+        val wrapper = JobWrapper();
+        val job = GlobalScope.launch() {
+            async {
+                delay(initialDelay);
+                while (wrapper.isRunning().get()) {
                     runnable.run();
+                    delay(repeatingDelay);
                 }
-            };
+            }
+        };
 
-            this.job = newJob;
-        }
-        return this.job!!;
+        wrapper.setJob(job);
+        return wrapper;
     }
 
-    fun asyncDelayed(runnable : Runnable, delay: Long) : Job {
-        if(this.job == null) {
-            val newJob = GlobalScope.launch() {
-                async {
-                    delay(delay);
-                    runnable.run();
-                }
-            };
-
-            this.job = newJob;
-        }
-        return this.job!!;
-    }
-
-    fun asyncRepeating(runnable: Runnable, initialDelay : Long, repeatingDelay : Long) : Job {
-        if(this.job == null) {
-            val newJob = GlobalScope.launch() {
-                async {
-                    delay(initialDelay);
-                    while (isRunning().get()) {
-                        runnable.run();
-                        delay(repeatingDelay);
-                    }
-                }
-            };
-
-            this.job = newJob;
-        }
-        return this.job!!;
-    }
-
-    fun await(future: Future<Any>) : Future<Any> {
+    fun await(future: Future<Any>) : FutureJobWrapper {
+        val wrapper = FutureJobWrapper();
         val completedFuture = CompletableFuture<Any>();
-        if (this.job == null) {
-            val newJob = GlobalScope.launch() {
-                async {
-                    completedFuture.complete(future.get());
-                }
-            };
-            this.job = newJob;
-        }
-        return future;
-    }
+        val job = GlobalScope.launch() {
+            async {
+                completedFuture.complete(future.get());
+            }
+        };
 
-    fun isRunning() : AtomicBoolean {
-        return this.running;
-    }
-
-    fun getJob() : Job {
-        return this.job!!;
-    }
-
-    fun stop() {
-        this.running.set(false);
+        wrapper.setFuture(completedFuture);
+        wrapper.setJob(job);
+        return wrapper;
     }
 }
