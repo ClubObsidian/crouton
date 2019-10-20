@@ -28,7 +28,7 @@ class Crouton public constructor() {
     private var job: Job? = null;
     private val running = AtomicBoolean(true);
 
-    fun createAsyncJob(runnable : Runnable) : Job {
+    fun async(runnable : Runnable) : Job {
         if(this.job == null) {
             val newJob = GlobalScope.launch() {
                 async {
@@ -41,7 +41,21 @@ class Crouton public constructor() {
         return this.job!!;
     }
 
-    fun createAsyncRepeatingJob(runnable: Runnable, initialDelay : Long, repeatingDelay : Long) : Job {
+    fun asyncDelayed(runnable : Runnable, delay: Long) : Job {
+        if(this.job == null) {
+            val newJob = GlobalScope.launch() {
+                async {
+                    delay(delay);
+                    runnable.run();
+                }
+            };
+
+            this.job = newJob;
+        }
+        return this.job!!;
+    }
+
+    fun asyncRepeating(runnable: Runnable, initialDelay : Long, repeatingDelay : Long) : Job {
         if(this.job == null) {
             val newJob = GlobalScope.launch() {
                 async {
@@ -58,9 +72,9 @@ class Crouton public constructor() {
         return this.job!!;
     }
 
-    fun createAsyncWait(future: Future<Any>) : Future<Any> {
+    fun await(future: Future<Any>) : Future<Any> {
         val completedFuture = CompletableFuture<Any>();
-        if(this.job == null) {
+        if (this.job == null) {
             val newJob = GlobalScope.launch() {
                 async {
                     completedFuture.complete(future.get());
@@ -69,10 +83,6 @@ class Crouton public constructor() {
             this.job = newJob;
         }
         return future;
-    }
-
-    suspend fun delayJob(millis: Long) {
-        delay(millis);
     }
 
     fun isRunning() : AtomicBoolean {
