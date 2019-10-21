@@ -13,7 +13,11 @@ jobs:
     script: 
     - jdk_switcher use openjdk8
     - ./gradlew clean
-    - ./gradlew test   
+    - ./gradlew test
+    - ./gradlew jacocoTestReport    
+
+after_success:
+- bash <(curl -s https://codecov.io/bash)
 
 after_script:
 - echo JAVA_HOME = ${JAVA_HOME}
