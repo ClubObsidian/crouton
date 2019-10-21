@@ -32,11 +32,12 @@ open class JobWrapper public constructor() {
         this.job = job;
     }
 
-    fun isRunning() : AtomicBoolean {
-        return this.running;
+    fun isRunning() : Boolean {
+        return this.running.get() && this.job!!.isActive;
     }
 
     fun stop() {
         this.running.set(false);
+        this.job!!.cancel();
     }
 }

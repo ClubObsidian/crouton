@@ -13,7 +13,7 @@ jobs:
     script: 
     - jdk_switcher use openjdk8
     - ./gradlew clean
-    - ./gradlew build    
+    - ./gradlew test   
 
 after_script:
 - echo JAVA_HOME = ${JAVA_HOME}

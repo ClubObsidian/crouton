@@ -55,7 +55,7 @@ class Crouton public constructor() {
         val job = GlobalScope.launch() {
             async {
                 delay(initialDelay);
-                while (wrapper.isRunning().get()) {
+                while (wrapper.isRunning()) {
                     runnable.run();
                     delay(repeatingDelay);
                 }
