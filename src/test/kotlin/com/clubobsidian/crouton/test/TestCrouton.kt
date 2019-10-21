@@ -47,11 +47,13 @@ class TestCrouton {
     fun testAsync() {
         val crouton = Crouton();
         val ran = AtomicBoolean(false);
-        crouton.async(runnable = Runnable {
+        var wrapper = crouton.async(runnable = Runnable {
             ran.set(true);
         });
 
-        assert(!ran.get());
+        while(!ran.get());
+
+        assert(ran.get());
     }
 
     @Test
@@ -83,7 +85,9 @@ class TestCrouton {
         val crouton = Crouton();
         val count = AtomicInteger(0);
         var wrapper = crouton.asyncRepeating(runnable = Runnable {
-            count.incrementAndGet();
+            if(count.get() != 10) {
+                count.incrementAndGet()
+            };
         }, initialDelay = 1, repeatingDelay = 1);
 
         while(wrapper.isRunning()) {
