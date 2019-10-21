@@ -16,67 +16,67 @@
 package com.clubobsidian.crouton
 
 import com.clubobsidian.crouton.wrapper.JobWrapper
-import com.clubobsidian.crouton.wrapper.FutureJobWrapper;
-import kotlinx.coroutines.*;
+import com.clubobsidian.crouton.wrapper.FutureJobWrapper
+import kotlinx.coroutines.*
 import java.lang.Runnable
 
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Future
 
-class Crouton public constructor() {
+class Crouton() {
 
     fun async(runnable : Runnable) : JobWrapper {
-        val wrapper = JobWrapper();
-        val job = GlobalScope.launch() {
+        val wrapper = JobWrapper()
+        val job = GlobalScope.launch {
             async {
-                runnable.run();
+                runnable.run()
             }
-        };
+        }
 
-        wrapper.setJob(job);
-        return wrapper;
+        wrapper.setJob(job)
+        return wrapper
     }
 
     fun asyncDelayed(runnable : Runnable, delay: Long) : JobWrapper {
-        val wrapper = JobWrapper();
-        val job = GlobalScope.launch() {
+        val wrapper = JobWrapper()
+        val job = GlobalScope.launch {
             async {
-                delay(delay);
-                runnable.run();
+                delay(delay)
+                runnable.run()
             }
-        };
+        }
 
-        wrapper.setJob(job);
-        return wrapper;
+        wrapper.setJob(job)
+        return wrapper
     }
 
     fun asyncRepeating(runnable: Runnable, initialDelay : Long, repeatingDelay : Long) : JobWrapper {
-        val wrapper = JobWrapper();
-        val job = GlobalScope.launch() {
+        val wrapper = JobWrapper()
+        val job = GlobalScope.launch {
             async {
-                delay(initialDelay);
+                delay(initialDelay)
                 while (wrapper.isRunning()) {
-                    runnable.run();
-                    delay(repeatingDelay);
+                    runnable.run()
+                    delay(repeatingDelay)
                 }
             }
-        };
+        }
 
-        wrapper.setJob(job);
-        return wrapper;
+        wrapper.setJob(job)
+        return wrapper
     }
 
     fun await(future: Future<Any>) : FutureJobWrapper {
-        val wrapper = FutureJobWrapper();
-        val completedFuture = CompletableFuture<Any>();
-        val job = GlobalScope.launch() {
+        val wrapper = FutureJobWrapper()
+        val completedFuture = CompletableFuture<Any>()
+        val job = GlobalScope.launch {
             async {
-                completedFuture.complete(future.get());
+                completedFuture.complete(future.get())
             }
-        };
+        }
 
-        wrapper.setFuture(completedFuture);
-        wrapper.setJob(job);
-        return wrapper;
+        wrapper.setFuture(completedFuture)
+        wrapper.setJob(job)
+        return wrapper
     }
 }

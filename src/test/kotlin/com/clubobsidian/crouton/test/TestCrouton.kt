@@ -17,85 +17,85 @@ import java.util.concurrent.atomic.AtomicInteger
 
 class TestCrouton {
 
-    private val mainThreadSurrogate = newSingleThreadContext("Main thread");
+    private val mainThreadSurrogate = newSingleThreadContext("Main thread")
 
     @Before
     fun setup() {
-        Dispatchers.setMain(mainThreadSurrogate);
+        Dispatchers.setMain(mainThreadSurrogate)
     }
 
     @After
     fun tearDown() {
-        Dispatchers.resetMain();
-        this.mainThreadSurrogate.close();
+        Dispatchers.resetMain()
+        this.mainThreadSurrogate.close()
     }
 
     @Test
     fun testAsyncBlocking() = runBlockingTest {
-        val crouton = Crouton();
-        val ran = AtomicBoolean(false);
+        val crouton = Crouton()
+        val ran = AtomicBoolean(false)
         crouton.async(runnable = Runnable {
-            ran.set(true);
-        });
+            ran.set(true)
+        })
 
         crouton.async(runnable = Runnable {
-            assert(ran.get());
-        });
+            assert(ran.get())
+        })
     }
 
     @Test
     fun testAsync() {
-        val crouton = Crouton();
-        val ran = AtomicBoolean(false);
+        val crouton = Crouton()
+        val ran = AtomicBoolean(false)
         var wrapper = crouton.async(runnable = Runnable {
-            ran.set(true);
-        });
+            ran.set(true)
+        })
 
         while(!ran.get());
 
-        assert(ran.get());
+        assert(ran.get())
     }
 
     @Test
     fun testAsyncDelayedBlocking() = runBlockingTest {
-        val crouton = Crouton();
-        val ran = AtomicBoolean(false);
+        val crouton = Crouton()
+        val ran = AtomicBoolean(false)
         var wrapper = crouton.asyncDelayed(runnable = Runnable {
-            ran.set(true);
-        }, delay = 1);
+            ran.set(true)
+        }, delay = 1)
 
         while(wrapper.isRunning());
 
-        assert(ran.get());
+        assert(ran.get())
     }
 
     @Test
     fun testAsyncDelayed() {
-        val crouton = Crouton();
-        val ran = AtomicBoolean(false);
+        val crouton = Crouton()
+        val ran = AtomicBoolean(false)
         crouton.asyncDelayed(runnable = Runnable {
-           ran.set(true);
-        }, delay = 1);
+           ran.set(true)
+        }, delay = 1)
 
-        assert(!ran.get());
+        assert(!ran.get())
     }
 
     @Test
     fun testAsyncRepeatingBlocking() = runBlockingTest {
-        val crouton = Crouton();
-        val count = AtomicInteger(0);
+        val crouton = Crouton()
+        val count = AtomicInteger(0)
         var wrapper = crouton.asyncRepeating(runnable = Runnable {
             if(count.get() != 10) {
                 count.incrementAndGet()
-            };
-        }, initialDelay = 1, repeatingDelay = 1);
+            }
+        }, initialDelay = 1, repeatingDelay = 1)
 
         while(wrapper.isRunning()) {
             if(count.get() >= 10) {
-                break;
+                break
             }
         }
 
-        assert(count.get() == 10);
+        assert(count.get() == 10)
     }
 }
