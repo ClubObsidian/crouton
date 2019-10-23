@@ -38,7 +38,7 @@ class TestCrouton {
             ran.set(true)
         })
 
-        while(!ran.get());
+        while(wrapper.isRunning());
 
         assert(ran.get())
     }
