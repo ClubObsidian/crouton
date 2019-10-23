@@ -83,6 +83,7 @@ class TestCrouton {
 
         while(wrapper.isRunning()) {
             if(count.get() >= 10) {
+                wrapper.stop()
                 break
             }
         }
