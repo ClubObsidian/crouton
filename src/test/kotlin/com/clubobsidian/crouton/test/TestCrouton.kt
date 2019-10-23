@@ -17,30 +17,17 @@ import java.util.concurrent.atomic.AtomicInteger
 
 class TestCrouton {
 
-    private val mainThreadSurrogate = newSingleThreadContext("Main thread")
-
-    @Before
-    fun setup() {
-        Dispatchers.setMain(mainThreadSurrogate)
-    }
-
-    @After
-    fun tearDown() {
-        Dispatchers.resetMain()
-        this.mainThreadSurrogate.close()
-    }
-
     @Test
-    fun testAsyncBlocking() = runBlockingTest {
+    fun testAsyncBlocking() {
         val crouton = Crouton()
         val ran = AtomicBoolean(false)
-        crouton.async(runnable = Runnable {
+        var job = crouton.async(runnable = Runnable {
             ran.set(true)
         })
 
-        crouton.async(runnable = Runnable {
-            assert(ran.get())
-        })
+        while(job.isRunning());
+
+        assert(ran.get())
     }
 
     @Test
@@ -73,15 +60,17 @@ class TestCrouton {
     fun testAsyncDelayed() {
         val crouton = Crouton()
         val ran = AtomicBoolean(false)
-        crouton.asyncDelayed(runnable = Runnable {
+        var job = crouton.asyncDelayed(runnable = Runnable {
            ran.set(true)
         }, delay = 1)
 
-        assert(!ran.get())
+        while(job.isRunning());
+
+        assert(ran.get())
     }
 
     @Test
-    fun testAsyncRepeatingBlocking() = runBlockingTest {
+    fun testAsyncRepeating() {
         val crouton = Crouton()
         val count = AtomicInteger(0)
         var wrapper = crouton.asyncRepeating(runnable = Runnable {
