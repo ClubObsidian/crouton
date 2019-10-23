@@ -9,9 +9,11 @@ import org.junit.After
 
 import org.junit.Before
 import org.junit.Test
+import java.util.concurrent.Callable
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
+import java.util.concurrent.FutureTask
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
 
@@ -25,7 +27,7 @@ class TestCrouton {
             ran.set(true)
         })
 
-        while(job.isRunning());
+        while(job.isRunning()) {}
 
         assert(ran.get())
     }
@@ -38,7 +40,7 @@ class TestCrouton {
             ran.set(true)
         })
 
-        while(wrapper.isRunning());
+        while(wrapper.isRunning()) {}
 
         assert(ran.get())
     }
@@ -51,7 +53,7 @@ class TestCrouton {
             ran.set(true)
         }, delay = 1)
 
-        while(wrapper.isRunning());
+        while(wrapper.isRunning()) {}
 
         assert(ran.get())
     }
@@ -64,7 +66,7 @@ class TestCrouton {
            ran.set(true)
         }, delay = 1)
 
-        while(job.isRunning());
+        while(job.isRunning()) {}
 
         assert(ran.get())
     }
@@ -86,5 +88,19 @@ class TestCrouton {
         }
 
         assert(count.get() == 10)
+    }
+
+    //@Test
+    fun testAwait() {
+        val crouton = Crouton()
+        val future: Future<Boolean> = FutureTask<Boolean>(Callable<Boolean>
+        {
+           true
+        });
+        val wrapper = crouton.await(future);
+
+        while(wrapper.isRunning()) {}
+
+        assert(wrapper.getFuture()!!.get() as Boolean);
     }
 }

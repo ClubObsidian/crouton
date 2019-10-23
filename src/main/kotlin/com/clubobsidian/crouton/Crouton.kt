@@ -66,12 +66,13 @@ class Crouton() {
         return wrapper
     }
 
-    fun await(future: Future<Any>) : FutureJobWrapper {
+    fun await(future: Future<*>) : FutureJobWrapper {
         val wrapper = FutureJobWrapper()
         val completedFuture = CompletableFuture<Any>()
         val job = GlobalScope.launch {
             async {
                 completedFuture.complete(future.get())
+                println("complete")
             }
         }
 
