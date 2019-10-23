@@ -88,7 +88,9 @@ class TestCrouton {
             }
         }
 
-        assert(count.get() == 10)
+        val getCount = count.get()
+        println("Count: $getCount")
+        assert(getCount == 10)
     }
 
     //@Test
