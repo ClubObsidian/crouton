@@ -22,8 +22,9 @@ import java.lang.Runnable
 
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Future
+import java.util.stream.Stream
 
-class Crouton() {
+open class Crouton() {
 
     fun async(runnable : Runnable) : JobWrapper {
         val wrapper = JobWrapper()
@@ -41,7 +42,7 @@ class Crouton() {
         val wrapper = JobWrapper()
         val job = GlobalScope.launch {
             async {
-                delay(delay)
+                kotlinx.coroutines.delay(delay)
                 runnable.run()
             }
         }
@@ -54,10 +55,10 @@ class Crouton() {
         val wrapper = JobWrapper()
         val job = GlobalScope.launch {
             async {
-                delay(initialDelay)
+                kotlinx.coroutines.delay(initialDelay)
                 while (wrapper.isRunning()) {
                     runnable.run()
-                    delay(repeatingDelay)
+                    kotlinx.coroutines.delay(repeatingDelay)
                 }
             }
         }
@@ -79,5 +80,11 @@ class Crouton() {
         wrapper.setFuture(completedFuture)
         wrapper.setJob(job)
         return wrapper
+    }
+
+    fun delay(delay: Long) {
+        runBlocking {
+            kotlinx.coroutines.delay(delay)
+        }
     }
 }
