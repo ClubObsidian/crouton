@@ -27,7 +27,7 @@ repositories {
 	maven { url 'https://jitpack.io' }
 }
 
-compile 'com.github.clubobsidian:crouton:0.5.0'
+compile 'com.github.clubobsidian:crouton:0.5.1'
 ```
 
 ### Maven
@@ -43,6 +43,6 @@ compile 'com.github.clubobsidian:crouton:0.5.0'
 <dependency>
 	<groupId>com.github.clubobsidian</groupId>
 	<artifactId>crouton</artifactId>
-	<version>0.5.0</version>
+	<version>0.5.1</version>
 </dependency>
 ```
