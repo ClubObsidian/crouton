@@ -22,7 +22,6 @@ import java.lang.Runnable
 
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Future
-import java.util.stream.Stream
 
 open class Crouton() {
 
@@ -70,14 +69,14 @@ open class Crouton() {
     fun await(future: Future<*>) : FutureJobWrapper {
         val wrapper = FutureJobWrapper()
         val completedFuture = CompletableFuture<Any>()
+        wrapper.setFuture(completedFuture)
         val job = GlobalScope.launch {
             async {
                 completedFuture.complete(future.get())
                 println("complete")
-            }
+            }.await()
         }
 
-        wrapper.setFuture(completedFuture)
         wrapper.setJob(job)
         return wrapper
     }

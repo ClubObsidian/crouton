@@ -98,13 +98,15 @@ class TestCrouton {
         val crouton = Crouton()
         val future: Future<Boolean> = FutureTask<Boolean>(Callable<Boolean> {
            true
-        });
-        val wrapper = crouton.await(future);
+        })
+
+        val wrapper = crouton.await(future)
 
         while(wrapper.isRunning()) {}
 
-        assert(wrapper.getFuture()!!.get() as Boolean);
+        assert(wrapper.getFuture()!!.get() as Boolean)
     }*/
+
 
     @Test
     fun testDelay() {
@@ -114,13 +116,14 @@ class TestCrouton {
             count.incrementAndGet()
             crouton.delay(10000)
             count.incrementAndGet()
-        });
+        })
 
         val newWrapper = crouton.async(runnable = Runnable {
             crouton.delay(1000)
             count.incrementAndGet()
         })
-        while(wrapper.isRunning());
+
+        while(wrapper.isRunning()) {}
 
         assert(count.get() == 3)
     }
