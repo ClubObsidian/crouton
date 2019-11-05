@@ -24,7 +24,7 @@ import java.util.concurrent.Callable
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Future
 
-open class Crouton() {
+class Crouton() {
 
     fun async(runnable : Runnable) : JobWrapper {
         val wrapper = JobWrapper()
