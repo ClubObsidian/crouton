@@ -19,6 +19,7 @@ import com.clubobsidian.crouton.wrapper.JobWrapper
 import com.clubobsidian.crouton.wrapper.FutureJobWrapper
 import kotlinx.coroutines.*
 import java.lang.Runnable
+import java.util.concurrent.Callable
 
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Future
@@ -66,15 +67,14 @@ open class Crouton() {
         return wrapper
     }
 
-    fun await(future: Future<*>) : FutureJobWrapper {
+    fun await(callable: Callable<*>) : FutureJobWrapper {
         val wrapper = FutureJobWrapper()
         val completedFuture = CompletableFuture<Any>()
         wrapper.setFuture(completedFuture)
         val job = GlobalScope.launch {
             async {
-                completedFuture.complete(future.get())
-                println("complete")
-            }.await()
+                completedFuture.complete(callable.call())
+            }
         }
 
         wrapper.setJob(job)
