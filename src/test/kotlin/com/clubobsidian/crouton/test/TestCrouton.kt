@@ -138,4 +138,24 @@ class TestCrouton {
 
         assert(count.get() == 3)
     }
+
+    @Test
+    fun testDelayBlocking() {
+        val count = AtomicInteger(0);
+        val crouton = Crouton()
+        val wrapper = crouton.async(runnable = Runnable {
+            crouton.delay(1000)
+            count.incrementAndGet()
+        })
+
+        crouton.async(runnable = Runnable {
+            crouton.delay(100)
+            wrapper.stop()
+        })
+
+        while(wrapper.isRunning()) {}
+
+        println("count ${count.get()}")
+        assert(count.get() == 0)
+    }
 }

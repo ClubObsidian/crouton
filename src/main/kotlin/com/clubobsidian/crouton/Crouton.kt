@@ -124,4 +124,15 @@ class Crouton() {
             kotlinx.coroutines.delay(delay)
         }
     }
+
+    /**
+     * Runs a [Runnable] that blocks the current thread until completion
+     *
+     * @param runnable The runnable to run
+     */
+    fun runBlocking(runnable: Runnable) {
+        runBlocking {
+            runnable.run()
+        }
+    }
 }
