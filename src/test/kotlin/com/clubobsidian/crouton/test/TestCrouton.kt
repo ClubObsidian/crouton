@@ -76,7 +76,7 @@ class TestCrouton {
         val crouton = Crouton()
         val count = AtomicInteger(0)
         var wrapper = crouton.asyncRepeating(runnable = Runnable {
-            if(count.get() != 10) {
+            if(count.get() < 10) {
                 count.incrementAndGet()
             }
         }, initialDelay = 1, repeatingDelay = 1)
