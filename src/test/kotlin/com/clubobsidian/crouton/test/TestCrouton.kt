@@ -71,6 +71,10 @@ class TestCrouton {
         assert(ran.get())
     }
 
+    private suspend fun get(count: AtomicInteger) : Int {
+        return count.get()
+    }
+
     private suspend fun increment(count: AtomicInteger) {
         count.incrementAndGet()
     }
@@ -81,14 +85,14 @@ class TestCrouton {
         val count = AtomicInteger(0)
         var wrapper = crouton.asyncRepeating(runnable = Runnable {
             runBlocking {
-                if(count.get() < 10) {
+                if (get(count) < 10) {
                     increment(count)
                 }
             }
         }, initialDelay = 1, repeatingDelay = 1)
 
-        while(wrapper.isRunning()) {
-            if(count.get() >= 10) {
+        while (wrapper.isRunning()) {
+            if (count.get() >= 10) {
                 wrapper.stop()
                 break
             }
