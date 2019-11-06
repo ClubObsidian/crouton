@@ -92,9 +92,10 @@ class TestCrouton {
         }, initialDelay = 1, repeatingDelay = 1)
 
         while (wrapper.isRunning()) {
-            if (count.get() >= 10) {
-                wrapper.stop()
-                break
+            runBlocking {
+                if (get(count) >= 10) {
+                    wrapper.stop()
+                }
             }
         }
 
