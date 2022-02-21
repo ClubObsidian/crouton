@@ -2,18 +2,10 @@ package com.clubobsidian.crouton.test
 
 import com.clubobsidian.crouton.Crouton
 import kotlinx.coroutines.*
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runBlockingTest
-import kotlinx.coroutines.test.setMain
-import org.junit.After
 
-import org.junit.Before
 import org.junit.Test
 import java.util.concurrent.Callable
-import java.util.concurrent.CompletableFuture
-import java.util.concurrent.Executors
-import java.util.concurrent.Future
-import java.util.concurrent.FutureTask
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
 
@@ -27,7 +19,9 @@ class TestCrouton {
             ran.set(true)
         })
 
-        while(job.isRunning()) {}
+        while(job.isRunning()) {
+            Thread.sleep(1)
+        }
 
         assert(ran.get())
     }
