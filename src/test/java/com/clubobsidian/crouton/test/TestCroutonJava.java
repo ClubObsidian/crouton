@@ -18,14 +18,13 @@ public class TestCroutonJava {
             crouton.sleep(1000);
             count.incrementAndGet();
         });
+
         try {
             Thread.sleep(100);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        crouton.async(() -> {
-            job.stop();
-        });
+        crouton.async(job::stop);
         assertTrue(count.get() == 0);
     }
 }
