@@ -15,6 +15,7 @@
  */
 package com.clubobsidian.crouton.wrapper
 
+import kotlinx.coroutines.CoroutineScope
 import java.util.concurrent.Future
 
 class FutureJobWrapper: JobWrapper {
@@ -22,6 +23,7 @@ class FutureJobWrapper: JobWrapper {
     constructor() : super()
 
     private var future: Future<Any>? = null
+    private var scope: CoroutineScope? = null
 
     fun getFuture(): Future<Any>? {
         return this.future
@@ -29,5 +31,14 @@ class FutureJobWrapper: JobWrapper {
 
     fun setFuture(future: Future<Any>?) {
         this.future = future
+    }
+
+
+    fun getScope(): CoroutineScope? {
+        return this.scope
+    }
+
+    fun setScope(scope: CoroutineScope) {
+        this.scope = scope
     }
 }

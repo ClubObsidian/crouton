@@ -106,6 +106,7 @@ class Crouton() {
         wrapper.setFuture(completedFuture)
         val job = GlobalScope.launch {
             async {
+                wrapper.setScope(this)
                 completedFuture.complete(callable.call())
             }
         }
@@ -119,20 +120,9 @@ class Crouton() {
      *
      * @param delay time duration
      */
-    fun delay(delay: Long) {
-        runBlocking {
-            kotlinx.coroutines.delay(delay)
-        }
-    }
-
-    /**
-     * Runs a [Runnable] that blocks the current thread until completion
-     *
-     * @param runnable The runnable to run
-     */
-    fun runBlocking(runnable: Runnable) {
-        runBlocking {
-            runnable.run()
+    fun sleep(delay: Long) {
+        runBlocking{
+            delay(delay)
         }
     }
 }

@@ -65,11 +65,11 @@ class TestCrouton {
         assert(ran.get())
     }
 
-    private suspend fun get(count: AtomicInteger) : Int {
+    private fun get(count: AtomicInteger) : Int {
         return count.get()
     }
 
-    private suspend fun increment(count: AtomicInteger) {
+    private fun increment(count: AtomicInteger) {
         count.incrementAndGet()
     }
 
@@ -114,17 +114,17 @@ class TestCrouton {
 
 
     @Test
-    fun testDelay() {
+    fun testSleep() {
         val count = AtomicInteger(0)
         val crouton = Crouton()
         val wrapper = crouton.async(runnable = Runnable {
             count.incrementAndGet()
-            crouton.delay(1000)
+            crouton.sleep(1000)
             count.incrementAndGet()
         })
 
-        val newWrapper = crouton.async(runnable = Runnable {
-            crouton.delay(500)
+        crouton.async(runnable = Runnable {
+            crouton.sleep(500)
             count.incrementAndGet()
         })
 
@@ -134,20 +134,22 @@ class TestCrouton {
     }
 
     @Test
-    fun testDelayBlocking() {
+    fun testSleepBlocking() {
         val count = AtomicInteger(0);
         val crouton = Crouton()
         val wrapper = crouton.async(runnable = Runnable {
-            crouton.delay(1000)
+            crouton.sleep(1000)
             count.incrementAndGet()
         })
 
         crouton.async(runnable = Runnable {
-            crouton.delay(100)
+            crouton.sleep(100)
             wrapper.stop()
         })
 
-        while(wrapper.isRunning()) {}
+        while(wrapper.isRunning()) {
+            Thread.sleep(1)
+        }
 
         println("count ${count.get()}")
         assert(count.get() == 0)
