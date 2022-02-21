@@ -3,8 +3,8 @@ package com.clubobsidian.crouton.test
 import com.clubobsidian.crouton.Crouton
 import kotlinx.coroutines.*
 import kotlinx.coroutines.test.runBlockingTest
+import org.junit.jupiter.api.Test
 
-import org.junit.Test
 import java.util.concurrent.Callable
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
