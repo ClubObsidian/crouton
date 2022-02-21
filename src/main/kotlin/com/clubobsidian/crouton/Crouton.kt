@@ -116,7 +116,7 @@ class Crouton() {
     }
 
     /**
-     * Delays a coroutine by a specific duration, this is blocking.
+     * Delays the current coroutine by a specific duration, this functionality is blocking
      *
      * @param delay time duration
      */
