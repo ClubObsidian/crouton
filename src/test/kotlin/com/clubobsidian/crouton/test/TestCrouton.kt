@@ -3,11 +3,13 @@ package com.clubobsidian.crouton.test
 import com.clubobsidian.crouton.Crouton
 import kotlinx.coroutines.*
 import kotlinx.coroutines.test.runBlockingTest
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
 import java.util.concurrent.Callable
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
+import java.util.concurrent.atomic.AtomicLong
 
 class TestCrouton {
 
@@ -134,15 +136,26 @@ class TestCrouton {
             count.incrementAndGet()
         })
 
+        val startTime = System.currentTimeMillis()
+        val endTime = AtomicLong()
+        var diff = System.currentTimeMillis()
         Crouton.async(runnable = Runnable {
             Crouton.sleep(100)
+            val stopTime = System.currentTimeMillis()
+            endTime.set(stopTime)
             wrapper.stop()
         })
+        diff = System.currentTimeMillis() - diff
 
         while(wrapper.isRunning()) {
             Thread.sleep(1)
         }
 
+        println("diff: $diff")
+        assertTrue(diff < 10)
+        val delta = endTime.get() - startTime
+        println("delay: $delta")
+        assertTrue(delta >= 100)
         println("count ${count.get()}")
         assert(count.get() == 0)
     }

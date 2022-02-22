@@ -15,9 +15,9 @@
  */
 package com.clubobsidian.crouton
 
-import com.clubobsidian.crouton.wrapper.JobWrapper
-import com.clubobsidian.crouton.wrapper.JobWrapperCompletableFuture
-import com.clubobsidian.crouton.wrapper.JobWrapperFuture
+import com.clubobsidian.crouton.wrapper.CroutonWrapper
+import com.clubobsidian.crouton.wrapper.CroutonWrapperCompletableFuture
+import com.clubobsidian.crouton.wrapper.CroutonWrapperFuture
 import kotlinx.coroutines.*
 import java.lang.Runnable
 import java.util.concurrent.Callable
@@ -35,11 +35,11 @@ object Crouton {
      * Create an asynchronous job that runs one time.
      *
      * @param runnable [Runnable] to run
-     * @return the created [JobWrapper]
+     * @return the created [CroutonWrapper]
      */
     @JvmStatic
-    fun async(runnable : Runnable) : JobWrapper {
-        val wrapper = JobWrapper()
+    fun async(runnable : Runnable) : CroutonWrapper {
+        val wrapper = CroutonWrapper()
         wrapper.setJob(GlobalScope.launch {
             runnable.run()
         })
@@ -51,11 +51,11 @@ object Crouton {
      *
      * @param runnable [Runnable] to run
      * @param delay [Long] initial delay
-     * @return the created [JobWrapper]
+     * @return the created [CroutonWrapper]
      */
     @JvmStatic
-    fun asyncDelayed(runnable : Runnable, delay: Long) : JobWrapper {
-        val wrapper = JobWrapper()
+    fun asyncDelayed(runnable : Runnable, delay: Long) : CroutonWrapper {
+        val wrapper = CroutonWrapper()
         wrapper.setJob(GlobalScope.launch {
             delay(delay)
             runnable.run()
@@ -69,11 +69,11 @@ object Crouton {
      * @param runnable [Runnable] to run
      * @param initialDelay [Long] initial delay
      * @param repeatingDelay [Long] repeating delay
-     * @return the created [JobWrapper]
+     * @return the created [CroutonWrapper]
      */
     @JvmStatic
-    fun asyncRepeating(runnable: Runnable, initialDelay : Long, repeatingDelay : Long) : JobWrapper {
-        val wrapper = JobWrapper()
+    fun asyncRepeating(runnable: Runnable, initialDelay : Long, repeatingDelay : Long) : CroutonWrapper {
+        val wrapper = CroutonWrapper()
         wrapper.setJob(GlobalScope.launch {
             delay(initialDelay)
             while (wrapper.isRunning()) {
@@ -91,9 +91,9 @@ object Crouton {
      * @return the created [FutureJobWrapper]
      */
     @JvmStatic
-    fun await(callable: Callable<*>) : JobWrapperFuture<*> {
-        val wrapper: JobWrapperCompletableFuture<Any> = JobWrapperCompletableFuture()
-        wrapper.getJobWrapper().setJob(GlobalScope.launch {
+    fun await(callable: Callable<*>) : CroutonWrapperFuture<*> {
+        val wrapper: CroutonWrapperCompletableFuture<Any> = CroutonWrapperCompletableFuture()
+        wrapper.getCroutonWrapper().setJob(GlobalScope.launch {
                 wrapper.complete(callable.call())
         })
         return wrapper
@@ -106,7 +106,7 @@ object Crouton {
      */
     @JvmStatic
     fun sleep(delay: Long) {
-        runBlocking{
+        runBlocking {
             delay(delay)
         }
     }

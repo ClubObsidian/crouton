@@ -1,7 +1,7 @@
 package com.clubobsidian.crouton.test;
 
 import com.clubobsidian.crouton.Crouton;
-import com.clubobsidian.crouton.wrapper.JobWrapper;
+import com.clubobsidian.crouton.wrapper.CroutonWrapper;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -13,7 +13,7 @@ public class TestCroutonJava {
     @Test
     public void testSleep() {
         AtomicInteger count = new AtomicInteger();
-        JobWrapper job = Crouton.async(() -> {
+        CroutonWrapper job = Crouton.async(() -> {
             Crouton.sleep(1000);
             count.incrementAndGet();
         });
