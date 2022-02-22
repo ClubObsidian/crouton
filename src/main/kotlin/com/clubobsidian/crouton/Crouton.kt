@@ -41,9 +41,7 @@ object Crouton {
     fun async(runnable : Runnable) : JobWrapper {
         val wrapper = JobWrapper()
         wrapper.setJob(GlobalScope.launch {
-            async {
-                runnable.run()
-            }
+            runnable.run()
         })
         return wrapper
     }
@@ -59,10 +57,8 @@ object Crouton {
     fun asyncDelayed(runnable : Runnable, delay: Long) : JobWrapper {
         val wrapper = JobWrapper()
         wrapper.setJob(GlobalScope.launch {
-            async {
-                kotlinx.coroutines.delay(delay)
-                runnable.run()
-            }
+            kotlinx.coroutines.delay(delay)
+            runnable.run()
         })
         return wrapper
     }
@@ -79,12 +75,10 @@ object Crouton {
     fun asyncRepeating(runnable: Runnable, initialDelay : Long, repeatingDelay : Long) : JobWrapper {
         val wrapper = JobWrapper()
         wrapper.setJob(GlobalScope.launch {
-            async {
-                kotlinx.coroutines.delay(initialDelay)
-                while (wrapper.isRunning()) {
-                    runnable.run()
-                    kotlinx.coroutines.delay(repeatingDelay)
-                }
+            kotlinx.coroutines.delay(initialDelay)
+            while (wrapper.isRunning()) {
+                runnable.run()
+                kotlinx.coroutines.delay(repeatingDelay)
             }
         })
         return wrapper
@@ -100,9 +94,7 @@ object Crouton {
     fun await(callable: Callable<*>) : JobWrapperFuture<*> {
         val wrapper: JobWrapperCompletableFuture<Any> = JobWrapperCompletableFuture()
         wrapper.getJobWrapper().setJob(GlobalScope.launch {
-            async {
                 wrapper.complete(callable.call())
-            }
         })
         return wrapper
     }
