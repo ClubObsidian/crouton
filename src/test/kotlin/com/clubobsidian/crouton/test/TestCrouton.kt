@@ -103,7 +103,7 @@ class TestCrouton {
 
         while(wrapper.isRunning()) {}
 
-        assert(wrapper.getFuture()!!.get() as Boolean)
+        assert(wrapper.get() as Boolean)
     }
 
 
