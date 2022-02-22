@@ -13,9 +13,8 @@ class TestCrouton {
 
     @Test
     fun testAsyncBlocking() {
-        val crouton = Crouton()
         val ran = AtomicBoolean(false)
-        var job = crouton.async(runnable = Runnable {
+        var job = Crouton.async(runnable = Runnable {
             ran.set(true)
         })
 
@@ -28,9 +27,8 @@ class TestCrouton {
 
     @Test
     fun testAsync() {
-        val crouton = Crouton()
         val ran = AtomicBoolean(false)
-        var wrapper = crouton.async(runnable = Runnable {
+        var wrapper = Crouton.async(runnable = Runnable {
             ran.set(true)
         })
 
@@ -41,9 +39,8 @@ class TestCrouton {
 
     @Test
     fun testAsyncDelayedBlocking() = runBlockingTest {
-        val crouton = Crouton()
         val ran = AtomicBoolean(false)
-        var wrapper = crouton.asyncDelayed(runnable = Runnable {
+        var wrapper = Crouton.asyncDelayed(runnable = Runnable {
             ran.set(true)
         }, delay = 1)
 
@@ -54,9 +51,8 @@ class TestCrouton {
 
     @Test
     fun testAsyncDelayed() {
-        val crouton = Crouton()
         val ran = AtomicBoolean(false)
-        var job = crouton.asyncDelayed(runnable = Runnable {
+        var job = Crouton.asyncDelayed(runnable = Runnable {
            ran.set(true)
         }, delay = 1)
 
@@ -75,9 +71,8 @@ class TestCrouton {
 
     @Test
     fun testAsyncRepeating() {
-        val crouton = Crouton()
         val count = AtomicInteger(0)
-        var wrapper = crouton.asyncRepeating(runnable = Runnable {
+        var wrapper = Crouton.asyncRepeating(runnable = Runnable {
             runBlocking {
                 if (get(count) < 10) {
                     increment(count)
@@ -100,12 +95,11 @@ class TestCrouton {
 
     @Test
     fun testAwait() {
-        val crouton = Crouton()
         val callable: Callable<Boolean> = Callable<Boolean> {
            true
         }
 
-        val wrapper = crouton.await(callable)
+        val wrapper = Crouton.await(callable)
 
         while(wrapper.isRunning()) {}
 
@@ -116,15 +110,14 @@ class TestCrouton {
     @Test
     fun testSleep() {
         val count = AtomicInteger(0)
-        val crouton = Crouton()
-        val wrapper = crouton.async(runnable = Runnable {
+        val wrapper = Crouton.async(runnable = Runnable {
             count.incrementAndGet()
-            crouton.sleep(1000)
+            Crouton.sleep(1000)
             count.incrementAndGet()
         })
 
-        crouton.async(runnable = Runnable {
-            crouton.sleep(500)
+        Crouton.async(runnable = Runnable {
+            Crouton.sleep(500)
             count.incrementAndGet()
         })
 
@@ -136,14 +129,13 @@ class TestCrouton {
     @Test
     fun testSleepBlocking() {
         val count = AtomicInteger(0);
-        val crouton = Crouton()
-        val wrapper = crouton.async(runnable = Runnable {
-            crouton.sleep(1000)
+        val wrapper = Crouton.async(runnable = Runnable {
+            Crouton.sleep(1000)
             count.incrementAndGet()
         })
 
-        crouton.async(runnable = Runnable {
-            crouton.sleep(100)
+        Crouton.async(runnable = Runnable {
+            Crouton.sleep(100)
             wrapper.stop()
         })
 

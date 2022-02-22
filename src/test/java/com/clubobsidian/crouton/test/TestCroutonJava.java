@@ -12,10 +12,9 @@ public class TestCroutonJava {
 
     @Test
     public void testSleep() {
-        Crouton crouton = new Crouton();
         AtomicInteger count = new AtomicInteger();
-        JobWrapper job = crouton.async(() -> {
-            crouton.sleep(1000);
+        JobWrapper job = Crouton.async(() -> {
+            Crouton.sleep(1000);
             count.incrementAndGet();
         });
 
@@ -24,7 +23,7 @@ public class TestCroutonJava {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        crouton.async(job::stop);
+        Crouton.async(job::stop);
         assertTrue(count.get() == 0);
     }
 }

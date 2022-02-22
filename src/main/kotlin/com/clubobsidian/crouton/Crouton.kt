@@ -30,14 +30,14 @@ import java.util.concurrent.Future
  * Call a method to create a JobWrapper.
  *
  */
-class Crouton() {
-
+object Crouton {
     /**
      * Create an asynchronous job that runs one time.
      *
      * @param runnable [Runnable] to run
      * @return the created [JobWrapper]
      */
+    @JvmStatic
     fun async(runnable : Runnable) : JobWrapper {
         val wrapper = JobWrapper()
         val job = GlobalScope.launch {
@@ -57,6 +57,7 @@ class Crouton() {
      * @param delay [Long] initial delay
      * @return the created [JobWrapper]
      */
+    @JvmStatic
     fun asyncDelayed(runnable : Runnable, delay: Long) : JobWrapper {
         val wrapper = JobWrapper()
         val job = GlobalScope.launch {
@@ -78,6 +79,7 @@ class Crouton() {
      * @param repeatingDelay [Long] repeating delay
      * @return the created [JobWrapper]
      */
+    @JvmStatic
     fun asyncRepeating(runnable: Runnable, initialDelay : Long, repeatingDelay : Long) : JobWrapper {
         val wrapper = JobWrapper()
         val job = GlobalScope.launch {
@@ -100,6 +102,7 @@ class Crouton() {
      * @param callable [Callable] to call
      * @return the created [FutureJobWrapper]
      */
+    @JvmStatic
     fun await(callable: Callable<*>) : FutureJobWrapper {
         val wrapper = FutureJobWrapper()
         val completedFuture = CompletableFuture<Any>()
@@ -120,6 +123,7 @@ class Crouton() {
      *
      * @param delay time duration
      */
+    @JvmStatic
     fun sleep(delay: Long) {
         runBlocking{
             delay(delay)

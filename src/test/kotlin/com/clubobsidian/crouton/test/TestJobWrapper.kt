@@ -8,15 +8,13 @@ class TestJobWrapper {
 
     @Test
     fun testGetJob() {
-        val crouton = Crouton()
-        val wrapper = crouton.async(runnable = Runnable {})
+        val wrapper = Crouton.async(runnable = Runnable {})
         assert(wrapper.getJob() != null)
     }
 
     @Test
     fun testStopWrapper() {
-        val crouton = Crouton()
-        val wrapper = crouton.async(runnable = Runnable {})
+        val wrapper = Crouton.async(runnable = Runnable {})
         wrapper.stop()
         assert(!wrapper.isRunning())
     }
