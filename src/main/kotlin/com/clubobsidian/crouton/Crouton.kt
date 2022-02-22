@@ -18,14 +18,13 @@ package com.clubobsidian.crouton
 import com.clubobsidian.crouton.wrapper.CroutonWrapper
 import com.clubobsidian.crouton.wrapper.CroutonWrapperCompletableFuture
 import com.clubobsidian.crouton.wrapper.CroutonWrapperFuture
-import kotlinx.coroutines.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.lang.Runnable
 import java.util.concurrent.Callable
 
 import java.util.concurrent.Future
-import java.util.function.BiConsumer
-import kotlin.coroutines.Continuation
-import kotlin.coroutines.CoroutineContext
 
 /**
  * This class is responsible for creating coroutine jobs.
@@ -88,10 +87,10 @@ object Crouton {
     }
 
     /**
-     * Create an asynchronous job that returns a [FutureJobWrapper] with an underlying [Future] that can be used after completion.
+     * Create an asynchronous job that returns a [CroutonWrapperFuture] with an underlying [Future] that can be used after completion.
      *
      * @param callable [Callable] to call
-     * @return the created [FutureJobWrapper]
+     * @return the created [CroutonWrapperFuture]
      */
     @JvmStatic
     fun await(callable: Callable<*>) : CroutonWrapperFuture<*> {

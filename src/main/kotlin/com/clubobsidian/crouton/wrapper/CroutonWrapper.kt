@@ -19,7 +19,7 @@ import kotlinx.coroutines.*
 
 import java.util.concurrent.atomic.AtomicBoolean
 
-open class CroutonWrapper() {
+open class CroutonWrapper {
 
     private val running = AtomicBoolean(true)
     private var job: Job? = null

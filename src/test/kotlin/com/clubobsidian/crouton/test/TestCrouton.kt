@@ -2,21 +2,18 @@ package com.clubobsidian.crouton.test
 
 import com.clubobsidian.crouton.Crouton
 import kotlinx.coroutines.*
-import kotlinx.coroutines.test.runBlockingTest
-import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
 import java.util.concurrent.Callable
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
-import java.util.concurrent.atomic.AtomicLong
 
 class TestCrouton {
 
     @Test
     fun testAsyncBlocking() {
         val ran = AtomicBoolean(false)
-        var job = Crouton.async(runnable = Runnable {
+        val job = Crouton.async(runnable = Runnable {
             ran.set(true)
         })
 
@@ -30,23 +27,27 @@ class TestCrouton {
     @Test
     fun testAsync() {
         val ran = AtomicBoolean(false)
-        var wrapper = Crouton.async(runnable = Runnable {
+        val wrapper = Crouton.async(runnable = Runnable {
             ran.set(true)
         })
 
-        while(wrapper.isRunning()) {}
+        while(wrapper.isRunning()) {
+            Thread.sleep(1)
+        }
 
         assert(ran.get())
     }
 
     @Test
-    fun testAsyncDelayedBlocking() = runBlockingTest {
+    fun testAsyncDelayedBlocking() {
         val ran = AtomicBoolean(false)
-        var wrapper = Crouton.asyncDelayed(runnable = Runnable {
+        val wrapper = Crouton.asyncDelayed(runnable = Runnable {
             ran.set(true)
         }, delay = 1)
 
-        while(wrapper.isRunning()) {}
+        while(wrapper.isRunning()) {
+            Thread.sleep(1)
+        }
 
         assert(ran.get())
     }
@@ -54,11 +55,13 @@ class TestCrouton {
     @Test
     fun testAsyncDelayed() {
         val ran = AtomicBoolean(false)
-        var job = Crouton.asyncDelayed(runnable = Runnable {
+        val job = Crouton.asyncDelayed(runnable = Runnable {
            ran.set(true)
         }, delay = 1)
 
-        while(job.isRunning()) {}
+        while(job.isRunning()) {
+            Thread.sleep(1)
+        }
 
         assert(ran.get())
     }
@@ -74,7 +77,7 @@ class TestCrouton {
     @Test
     fun testAsyncRepeating() {
         val count = AtomicInteger(0)
-        var wrapper = Crouton.asyncRepeating(runnable = Runnable {
+        val wrapper = Crouton.asyncRepeating(runnable = Runnable {
             runBlocking {
                 if (get(count) < 10) {
                     increment(count)
@@ -103,7 +106,9 @@ class TestCrouton {
 
         val wrapper = Crouton.await(callable)
 
-        while(wrapper.isRunning()) {}
+        while(wrapper.isRunning()) {
+            Thread.sleep(1)
+        }
 
         assert(wrapper.get() as Boolean)
     }
