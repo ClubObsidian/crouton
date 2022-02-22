@@ -2,7 +2,6 @@ package com.clubobsidian.crouton.test
 
 import com.clubobsidian.crouton.Crouton
 import org.junit.jupiter.api.Test
-import java.util.concurrent.atomic.AtomicInteger
 
 class TestJobWrapper {
 

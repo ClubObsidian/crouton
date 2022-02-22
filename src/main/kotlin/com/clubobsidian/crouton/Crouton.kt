@@ -23,6 +23,9 @@ import java.lang.Runnable
 import java.util.concurrent.Callable
 
 import java.util.concurrent.Future
+import java.util.function.BiConsumer
+import kotlin.coroutines.Continuation
+import kotlin.coroutines.CoroutineContext
 
 /**
  * This class is responsible for creating coroutine jobs.
@@ -97,17 +100,5 @@ object Crouton {
                 wrapper.complete(callable.call())
         })
         return wrapper
-    }
-
-    /**
-     * Delays the current coroutine by a specific duration, this functionality is blocking
-     *
-     * @param delay time duration
-     */
-    @JvmStatic
-    fun sleep(delay: Long) {
-        runBlocking {
-            delay(delay)
-        }
     }
 }
