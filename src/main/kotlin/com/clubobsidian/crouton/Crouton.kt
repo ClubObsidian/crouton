@@ -40,13 +40,11 @@ object Crouton {
     @JvmStatic
     fun async(runnable : Runnable) : JobWrapper {
         val wrapper = JobWrapper()
-        val job = GlobalScope.launch {
+        wrapper.setJob(GlobalScope.launch {
             async {
                 runnable.run()
             }
-        }
-
-        wrapper.setJob(job)
+        })
         return wrapper
     }
 
@@ -60,14 +58,12 @@ object Crouton {
     @JvmStatic
     fun asyncDelayed(runnable : Runnable, delay: Long) : JobWrapper {
         val wrapper = JobWrapper()
-        val job = GlobalScope.launch {
+        wrapper.setJob(GlobalScope.launch {
             async {
                 kotlinx.coroutines.delay(delay)
                 runnable.run()
             }
-        }
-
-        wrapper.setJob(job)
+        })
         return wrapper
     }
 
@@ -82,7 +78,7 @@ object Crouton {
     @JvmStatic
     fun asyncRepeating(runnable: Runnable, initialDelay : Long, repeatingDelay : Long) : JobWrapper {
         val wrapper = JobWrapper()
-        val job = GlobalScope.launch {
+        wrapper.setJob(GlobalScope.launch {
             async {
                 kotlinx.coroutines.delay(initialDelay)
                 while (wrapper.isRunning()) {
@@ -90,9 +86,7 @@ object Crouton {
                     kotlinx.coroutines.delay(repeatingDelay)
                 }
             }
-        }
-
-        wrapper.setJob(job)
+        })
         return wrapper
     }
 
@@ -105,12 +99,11 @@ object Crouton {
     @JvmStatic
     fun await(callable: Callable<*>) : JobWrapperFuture<*> {
         val wrapper: JobWrapperCompletableFuture<Any> = JobWrapperCompletableFuture()
-        val job = GlobalScope.launch {
+        wrapper.getJobWrapper().setJob(GlobalScope.launch {
             async {
                 wrapper.complete(callable.call())
             }
-        }
-        wrapper.getJobWrapper().setJob(job)
+        })
         return wrapper
     }
 
