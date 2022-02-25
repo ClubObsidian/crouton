@@ -7,8 +7,9 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
+    continue-on-error: true
     steps:
     - uses: actions/checkout@v2
     - name: Set up JDK 1.11
@@ -22,7 +23,6 @@ jobs:
     - name: Gradle Test
       run: ./gradlew test
     - name: Upload artifact
-      continue-on-error: true
       uses: actions/upload-artifact@v1
       with:
         name: report
