@@ -71,7 +71,7 @@ class TestCrouton {
     private fun increment(currentCount: AtomicInteger, countTo: Int) {
         currentCount.updateAndGet { current ->
             var incremented = current
-            if (incremented < countTo + 1) {
+            if (incremented < countTo) {
                 incremented += 1
             }
             incremented
