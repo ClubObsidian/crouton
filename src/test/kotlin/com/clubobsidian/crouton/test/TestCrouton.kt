@@ -71,7 +71,7 @@ class TestCrouton {
     private fun increment(currentCount: AtomicInteger, countTo: Int) {
         currentCount.updateAndGet { current ->
             var incremented = current
-            if (current < countTo + 1) {
+            if (incremented != countTo) {
                 incremented += 1
             }
             incremented
@@ -91,7 +91,7 @@ class TestCrouton {
             increment(count, countTo)
         }, initialDelay = 1, repeatingDelay = 1)
 
-        while(wrapper1.isRunning() || wrapper2.isRunning()) {
+        while(wrapper1.isRunning() && wrapper2.isRunning()) {
             if(count.get() >= 10) {
                 Thread.sleep(1)
                 wrapper1.stop()
