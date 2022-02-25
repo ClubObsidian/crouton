@@ -56,7 +56,7 @@ class TestCrouton {
     fun testAsyncDelayed() {
         val ran = AtomicBoolean(false)
         val job = Crouton.asyncDelayed(runnable = Runnable {
-           ran.set(true)
+            ran.set(true)
         }, delay = 1)
 
         while(job.isRunning()) {
@@ -66,30 +66,34 @@ class TestCrouton {
         assert(ran.get())
     }
 
-    private fun get(count: AtomicInteger) : Int {
-        return count.get()
-    }
-
-    private fun increment(count: AtomicInteger) {
-        count.incrementAndGet()
+    private fun increment(currentCount: AtomicInteger, countTo: Int) {
+        currentCount.updateAndGet { current ->
+            var incremented = current
+            if (current < countTo + 1) {
+                incremented += 1
+            }
+            incremented
+        }
     }
 
     @Test
     fun testAsyncRepeating() {
         val count = AtomicInteger(0)
-        val wrapper = Crouton.asyncRepeating(runnable = Runnable {
-            runBlocking {
-                if (get(count) < 10) {
-                    increment(count)
-                }
-            }
+        val countTo = 10
+
+        val wrapper1 = Crouton.asyncRepeating(runnable = Runnable {
+            increment(count, countTo)
         }, initialDelay = 1, repeatingDelay = 1)
 
-        while (wrapper.isRunning()) {
-            runBlocking {
-                if (get(count) >= 10) {
-                    wrapper.stop()
-                }
+        val wrapper2 = Crouton.asyncRepeating(runnable = Runnable {
+            increment(count, countTo)
+        }, initialDelay = 1, repeatingDelay = 1)
+
+        while(wrapper1.isRunning() || wrapper2.isRunning()) {
+            if(count.get() >= 10) {
+                Thread.sleep(1)
+                wrapper1.stop()
+                wrapper2.stop()
             }
         }
 
@@ -101,7 +105,7 @@ class TestCrouton {
     @Test
     fun testAwait() {
         val callable: Callable<Boolean> = Callable<Boolean> {
-           true
+            true
         }
 
         val wrapper = Crouton.await(callable)
