@@ -2,6 +2,8 @@ package com.clubobsidian.crouton.test
 
 import com.clubobsidian.crouton.Crouton
 import kotlinx.coroutines.*
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
 import java.util.concurrent.Callable
@@ -21,7 +23,7 @@ class TestCrouton {
             Thread.sleep(1)
         }
 
-        assert(ran.get())
+        assertTrue(ran.get())
     }
 
     @Test
@@ -35,7 +37,7 @@ class TestCrouton {
             Thread.sleep(1)
         }
 
-        assert(ran.get())
+        assertTrue(ran.get())
     }
 
     @Test
@@ -49,7 +51,7 @@ class TestCrouton {
             Thread.sleep(1)
         }
 
-        assert(ran.get())
+        assertTrue(ran.get())
     }
 
     @Test
@@ -63,7 +65,7 @@ class TestCrouton {
             Thread.sleep(1)
         }
 
-        assert(ran.get())
+        assertTrue(ran.get())
     }
 
     private fun increment(currentCount: AtomicInteger, countTo: Int) {
@@ -99,7 +101,7 @@ class TestCrouton {
 
         val getCount = count.get()
         println("Count: $getCount")
-        assert(getCount == 10)
+        assertEquals(countTo, getCount);
     }
 
     @Test
@@ -113,7 +115,6 @@ class TestCrouton {
         while(wrapper.isRunning()) {
             Thread.sleep(1)
         }
-
-        assert(wrapper.get() as Boolean)
+        assertTrue(wrapper.get() as Boolean)
     }
 }
