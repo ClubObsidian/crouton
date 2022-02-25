@@ -21,3 +21,8 @@ jobs:
       run: ./gradlew clean      
     - name: Gradle Test
       run: ./gradlew test
+    - name: Upload artifact
+      uses: actions/upload-artifact@v1
+      with:
+        name: report
+        path: build/reports/tests/test/index.html
